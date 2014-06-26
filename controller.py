@@ -7,6 +7,31 @@ from Triggers import Interval
 from Utilities import Communicator
 from os.path import abspath, dirname, join
 
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import time
+import threading
+
+xar = [3,4,5,6,7,8,9]
+yar = [8,7,2,4,3,6,7]
+
+def initChart():
+
+	fig = plt.figure()
+	ax1 = fig.add_subplot(1,1,1)
+
+	def animate(i):
+		ax1.clear()
+		ax1.plot(xar,yar)
+
+	ani = animation.FuncAnimation(fig, animate, interval=1000)
+	plt.show()
+
+#Create a new thread for the chart, otherwise it blocks the rest of the process.
+chartThread = threading.Thread(target=initChart, args = ())
+chartThread.daemon = True
+chartThread.start()
+
 #load the config
 config = Config.Config.config
 print(config)
@@ -26,10 +51,15 @@ def cleanup():
 
 
 atexit.register(cleanup)
+count = 1
 
 #define what to do when messages are received
 def callback(data):
+	global count
 	print("{0}".format(data))
+	xar.append(5+ count)
+	yar.append(5+ count)
+	count +=1
 
 #let's set up each process from the config
 for process in config['processList']:

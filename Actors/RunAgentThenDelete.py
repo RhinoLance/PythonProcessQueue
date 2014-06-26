@@ -23,8 +23,8 @@ class RunAgentThenDelete:
 		self.log( "Processing " + os.path.basename(srcPath) )
 
 		try:
+			#execute the agent against the file
 			self.agent.process( srcPath, destPath, {})
-			print('Deleting {0}'.format(srcPath))
 			os.remove(srcPath)
 
 		except:

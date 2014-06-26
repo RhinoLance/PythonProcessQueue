@@ -1,22 +1,23 @@
-import time
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
-fig=plt.figure()
-plt.axis([0,1000,0,1])
+def update_line(num, data, line):
+    line.set_data(data[...,:num])
+    return line,
 
-i=0
-x=list()
-y=list()
+fig1 = plt.figure()
 
-plt.ion()
+data = np.random.rand(2, 25)
+l, = plt.plot([], [], 'r-')
+plt.xlim(0, 1)
+plt.ylim(0, 1)
+plt.xlabel('x')
+plt.title('test')
+line_ani = animation.FuncAnimation(fig1, update_line, 25, fargs=(data, l),
+    interval=50, blit=True)
+#line_ani.save('lines.mp4')
+
+
+
 plt.show()
-
-while i <1000:
-    temp_y=np.random.random()
-    x.append(i)
-    y.append(temp_y)
-    plt.scatter(i,temp_y)
-    i+=1
-    plt.draw()
-    time.sleep(0.05)
