@@ -6,7 +6,7 @@ from skimage import filter
 
 class Sobel:
 
-	def process(src, dest, config):
+	def process(self, src, dest, config):
 
 		try:
 			srcImg = imread(src, flatten=True)

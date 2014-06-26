@@ -4,11 +4,12 @@ from threading import Timer
 
 class Interval:
 
-	def __init__(self, config):
+	def __init__(self, config, fProgress):
 		self.running = False
 		self.config = config
-
 		self.rate = config['rate']
+		self.triggerCount = 0
+		self.fProgress = fProgress
 
 	def start(self, callback):
 		self.callback = callback
@@ -20,5 +21,11 @@ class Interval:
 		self.running = False
 
 	def run(self):
-		Timer(self.config.rate, self.run).start()
-		self.callback()
+		Timer(int(self.config['rate']), self.run).start()
+		self.triggerCount +=1
+
+		if self.callback != None:
+			self.callback()
+
+		if self.fProgress != None:
+			self.fProgress(self.triggerCount)

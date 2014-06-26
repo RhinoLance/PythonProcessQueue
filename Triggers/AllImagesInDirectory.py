@@ -6,14 +6,15 @@ import time
 
 class AllImagesInDirectory:
 
-	def ___init___(self, processor, config):
+	def __init__(self, config, fProgress):
 		self.running = False
-		self.processor = processor
 		self.config = config
+		self.fProgress = fProgress
 
-	def start(self):
+	def start(self, fCallback):
 		self.running = True
-		run()
+		self.fCallback = fCallback
+		self.run()
 
 	def stop(self):
 		self.running = False
@@ -24,16 +25,18 @@ class AllImagesInDirectory:
 		while self.running:
 			fileList = []
 
-			for fileName in os.listdir( self.config.src ):
+			for fileName in os.listdir( self.config['source'] ):
 				if img_re.match(fileName):
-					fileList.append(os.path.join(self.config.src, fileName))
+					fileList.append(os.path.join(self.config['source'], fileName))
 
 			while( len(fileList) > 0 ):
+				file = fileList.pop(0)
 
-				file = fileList[0]
+				if( not self.fCallback(file)):
+					time.sleep(1)
 
-				self.processor.process(fileList[0])
-
+				if self.fProgress != None:
+					self.fProgress(len(fileList))
 
 		#sleep here, we don't want to go into a tight loop if there aren't any images to process
-		time.sleep(0.1)
+		time.sleep(0.2)

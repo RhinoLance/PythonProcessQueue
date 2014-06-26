@@ -8,12 +8,12 @@ class Config:
 			    'commsPort':18881,
 		        'trigger': {
 			        'name': 'Interval',
-		            'rate': 1000
+		            'rate': 5
 		        },
 		        'actor': {
 			        'name': 'CopyLatest',
-		            'source': 'c:/users/lance/temp/s1',
-		            'target': 'c:/users/lance/temp/t1'
+		            'source': 'c:\\users\\lance\\temp\\s1',
+		            'target': 'c:\\users\\lance\\temp\\t1'
 		        }
 		    },
 	        {
@@ -21,13 +21,13 @@ class Config:
 			    'commsPort':18882,
 		        'trigger': {
 			        'name': 'AllImagesInDirectory',
-		            'source': 'c:/users/lance/temp/t1'
+		            'source': 'c:\\users\\lance\\temp\\t1'
 		        },
 		        'actor': {
 			        'name': 'RunAgentThenDelete',
-		            'target': 'c:/users/lance/temp/t2',
+		            'target': 'c:\\users\\lance\\temp\\t2',
 		            'agent': {
-			            'name': 'sobel'
+			            'name': 'Sobel'
 		            }
 		        }
 		    }
