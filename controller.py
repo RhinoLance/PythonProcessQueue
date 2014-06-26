@@ -7,30 +7,56 @@ from Triggers import Interval
 from Utilities import Communicator
 from os.path import abspath, dirname, join
 
+import ast
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
 import threading
+from threading import Timer
 
-xar = [3,4,5,6,7,8,9]
-yar = [8,7,2,4,3,6,7]
+currentValues = {'Interval':0, 'AllImagesInDirectory':0}
+timeSeries = []
+totalAr = []
+queueAr = []
+timeSeriesCount = 0
 
 def initChart():
 
 	fig = plt.figure()
 	ax1 = fig.add_subplot(1,1,1)
+	ax2 = fig.add_subplot(1,1,1)
 
 	def animate(i):
 		ax1.clear()
-		ax1.plot(xar,yar)
+		ax2.clear()
+		ax1.plot(timeSeries,totalAr)
+		ax2.plot(timeSeries,queueAr)
 
 	ani = animation.FuncAnimation(fig, animate, interval=1000)
 	plt.show()
+
+#create a timed plotting action
+def plot():
+	global timeSeriesCount
+
+	Timer(1, plot).start()
+	#take the current values and add to the plot array.  We need to do it this way, as the data may come in at different rates.
+	totalAr.append(currentValues['Interval'])
+	queueAr.append(currentValues['AllImagesInDirectory'])
+	timeSeries.append(timeSeriesCount)
+	timeSeriesCount += 1
+
+	#remove the old data, as we only want to watch the last 100 readings.
+	while len(timeSeries) > 100:
+		totalAr.pop(0)
+		queueAr.pop(0)
+		timeSeries.pop(0)
 
 #Create a new thread for the chart, otherwise it blocks the rest of the process.
 chartThread = threading.Thread(target=initChart, args = ())
 chartThread.daemon = True
 chartThread.start()
+plot()
 
 #load the config
 config = Config.Config.config
@@ -49,17 +75,20 @@ def cleanup():
 		#terminate the process
 		subprocess.Popen.terminate(process)
 
-
 atexit.register(cleanup)
-count = 1
 
 #define what to do when messages are received
 def callback(data):
-	global count
 	print("{0}".format(data))
-	xar.append(5+ count)
-	yar.append(5+ count)
-	count +=1
+
+	if isinstance(data, dict):
+		if data['id'] == 'Interval' or data['id'] == 'AllImagesInDirectory':
+			try:
+				currentValues[data['id']] = int(data['data'])
+			except:
+				None
+
+
 
 #let's set up each process from the config
 for process in config['processList']:

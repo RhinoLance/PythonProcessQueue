@@ -8,7 +8,7 @@ class Config:
 			    'commsPort':18881,
 		        'trigger': {
 			        'name': 'Interval',
-		            'rate': 1
+		            'rate': 0.5
 		        },
 		        'actor': {
 			        'name': 'CopyLatest',
