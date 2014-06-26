@@ -11,7 +11,7 @@ class Config:
 		            'rate': 1000
 		        },
 		        'actor': {
-			        'name': 'Copy',
+			        'name': 'CopyLatest',
 		            'source': 'c:/users/lance/temp/s1',
 		            'target': 'c:/users/lance/temp/t1'
 		        }
@@ -25,7 +25,7 @@ class Config:
 		        },
 		        'actor': {
 			        'name': 'RunAgentThenDelete',
-		            'target': 'c:/users/lance/temp/t3',
+		            'target': 'c:/users/lance/temp/t2',
 		            'agent': {
 			            'name': 'sobel'
 		            }
