@@ -1,8 +1,6 @@
 import threading
 
 from multiprocessing.connection import Listener
-#import multiprocessing.connector.Listener as l2
-#import multiprocessing.connector.Client as c2
 from multiprocessing.connection import Client
 from array import array
 

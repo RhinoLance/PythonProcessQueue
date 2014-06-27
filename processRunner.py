@@ -22,10 +22,8 @@ commClient.send('{0} process started'.format(id))
 
 def getClass( module, config, callback):
 
-	#dynamically get the class reference.
-	#exec('from {0} import {1}'.format(module, config['name']))
-	#klass = __import__('{0}.{1}'.format( module, config['name']))
-
+	#dynamically get the class reference at runtime, so that we don't need to import
+	# every Actor, Agent and Trigger that gets created.
 	mod = __import__('{0}.{1}'.format(module, config['name']), fromlist=[config['name']])
 	klass = getattr(mod, config['name'])
 

@@ -65,7 +65,7 @@ print(config)
 listenerDict = {}  #collection of comms listeners
 processDict = {}  #collection of processes, so that we can stop them later.
 
-#create a cleanup function for any processes and threads
+#create a cleanup function for any processes and threads that have to be stopped on exit
 def cleanup():
 	for listener in listenerDict:
 		#stop the listener
@@ -104,5 +104,6 @@ for process in config['processList']:
 	processDict[id] = subprocess.Popen( ['python', path, id] )
 	print( '{0} state: {1}'.format( id, processDict[id]))
 
+#loop forever so that the program doesn't exit till closed.
 while True:
 	time.sleep(1)
